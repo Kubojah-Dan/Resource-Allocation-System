@@ -24,6 +24,13 @@ export function Sidebar() {
   const { sidebarCollapsed, toggleSidebar } = useSettingsStore();
   const { user } = useAuthStore();
 
+  const filteredNavItems = navItems.filter((item) => {
+    if (user?.role === 'viewer') {
+      return ['/', '/allocation-board', '/reports'].includes(item.to);
+    }
+    return true;
+  });
+
   return (
     <motion.aside
       animate={{ width: sidebarCollapsed ? 64 : 240 }}
@@ -52,7 +59,7 @@ export function Sidebar() {
 
       {/* Navigation */}
       <nav className="flex-1 px-2 py-4 space-y-0.5 overflow-y-auto overflow-x-hidden">
-        {navItems.map(({ to, icon: Icon, label, highlight }) => (
+        {filteredNavItems.map(({ to, icon: Icon, label, highlight }) => (
           <NavLink
             key={to}
             to={to}

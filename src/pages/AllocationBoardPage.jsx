@@ -83,7 +83,7 @@ export default function AllocationBoardPage() {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            {autoAllocateSuggestions.length > 0 && (
+            {canWrite && autoAllocateSuggestions.length > 0 && (
               <button
                 onClick={() => setShowSuggestions((v) => !v)}
                 className={cn('badge border', showSuggestions ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20' : 'bg-slate-700/50 text-muted border-slate-600/30')}
@@ -92,7 +92,7 @@ export default function AllocationBoardPage() {
                 {autoAllocateSuggestions.length} suggestion{autoAllocateSuggestions.length > 1 ? 's' : ''}
               </button>
             )}
-            <AutoAllocateButton unassignedTasks={unassignedTasks} />
+            {canWrite && <AutoAllocateButton unassignedTasks={unassignedTasks} />}
           </div>
         </div>
 

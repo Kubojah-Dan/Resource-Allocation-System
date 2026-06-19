@@ -14,7 +14,7 @@ const ROLE_COLORS = {
   devops: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
 };
 
-export function ResourceCard({ resource, allocations, onEdit, onDelete, canWrite }) {
+export function ResourceCard({ resource, allocations, onEdit, onDelete, canWrite, canDelete }) {
   const [expanded, setExpanded] = useState(false);
   const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
   const hours = getResourceHoursInWeek(resource.id, weekStart, allocations);
@@ -65,9 +65,11 @@ export function ResourceCard({ resource, allocations, onEdit, onDelete, canWrite
             <button onClick={() => onEdit(resource)} className="btn-ghost p-1.5 rounded-md" title="Edit">
               <Edit className="w-3.5 h-3.5" />
             </button>
-            <button onClick={() => onDelete(resource.id)} className="btn-ghost p-1.5 rounded-md text-red-400 hover:bg-red-500/10" title="Delete">
-              <Trash2 className="w-3.5 h-3.5" />
-            </button>
+            {canDelete && (
+              <button onClick={() => onDelete(resource.id)} className="btn-ghost p-1.5 rounded-md text-red-400 hover:bg-red-500/10" title="Delete">
+                <Trash2 className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
         )}
       </div>

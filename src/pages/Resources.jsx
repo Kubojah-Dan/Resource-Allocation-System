@@ -153,6 +153,7 @@ export default function Resources() {
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 canWrite={canWrite}
+                canDelete={can('delete')}
               />
             ))}
           </AnimatePresence>

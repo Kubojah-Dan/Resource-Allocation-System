@@ -11,9 +11,18 @@ import Budget from '../pages/Budget';
 import Reports from '../pages/Reports';
 import Settings from '../pages/Settings';
 
-function ProtectedRoute({ children }) {
-  const { isAuthenticated } = useAuthStore();
-  return isAuthenticated ? children : <Navigate to="/login" replace />;
+function ProtectedRoute({ allowedRoles, children }) {
+  const { isAuthenticated, user } = useAuthStore();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  if (allowedRoles && !allowedRoles.includes(user?.role)) {
+    return <Navigate to="/" replace />;
+  }
+  
+  return children;
 }
 
 export function AppRoutes() {
@@ -30,13 +39,48 @@ export function AppRoutes() {
           }
         >
           <Route index element={<Dashboard />} />
-          <Route path="resources" element={<Resources />} />
-          <Route path="projects" element={<Projects />} />
+          <Route
+            path="resources"
+            element={
+              <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                <Resources />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="projects"
+            element={
+              <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                <Projects />
+              </ProtectedRoute>
+            }
+          />
           <Route path="allocation-board" element={<AllocationBoardPage />} />
-          <Route path="forecasting" element={<Forecasting />} />
-          <Route path="budget" element={<Budget />} />
+          <Route
+            path="forecasting"
+            element={
+              <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                <Forecasting />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="budget"
+            element={
+              <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                <Budget />
+              </ProtectedRoute>
+            }
+          />
           <Route path="reports" element={<Reports />} />
-          <Route path="settings" element={<Settings />} />
+          <Route
+            path="settings"
+            element={
+              <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                <Settings />
+              </ProtectedRoute>
+            }
+          />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

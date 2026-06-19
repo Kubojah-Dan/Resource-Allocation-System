@@ -118,6 +118,7 @@ export default function Projects() {
                 onAddTask={handleAddTask}
                 onEditTask={() => {}}
                 canWrite={canWrite}
+                canDelete={can('delete')}
               />
             ))}
           </AnimatePresence>

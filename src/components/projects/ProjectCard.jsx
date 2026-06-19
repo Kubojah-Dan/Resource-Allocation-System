@@ -8,7 +8,7 @@ import { cn, formatDate, formatCurrency, burnPct, getPriorityClasses, getStatusC
 const TASK_STATUS_ICONS = { done: CheckCircle, 'in-progress': Clock, todo: CircleDot };
 const TASK_STATUS_COLORS = { done: 'text-emerald-400', 'in-progress': 'text-indigo-400', todo: 'text-slate-500' };
 
-export function ProjectCard({ project, tasks, onEdit, onDelete, onAddTask, onEditTask, canWrite }) {
+export function ProjectCard({ project, tasks, onEdit, onDelete, onAddTask, onEditTask, canWrite, canDelete }) {
   const [expanded, setExpanded] = useState(false);
   const { allocations } = useAllocationStore();
   const burn = burnPct(project.spent, project.budget);
@@ -24,7 +24,7 @@ export function ProjectCard({ project, tasks, onEdit, onDelete, onAddTask, onEdi
 
       <div className="p-5">
         {/* Header */}
-        <div className="flex items-start justify-between gap-3">
+        <div className="flex items-start gap-3">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
               <h3 className="text-sm font-semibold text-slate-100">{project.name}</h3>
@@ -35,8 +35,10 @@ export function ProjectCard({ project, tasks, onEdit, onDelete, onAddTask, onEdi
           </div>
           {canWrite && (
             <div className="flex gap-1 flex-shrink-0">
-              <button onClick={() => onEdit(project)} className="btn-ghost p-1.5 rounded-md"><Edit className="w-3.5 h-3.5" /></button>
-              <button onClick={() => onDelete(project.id)} className="btn-ghost p-1.5 rounded-md text-red-400 hover:bg-red-500/10"><Trash2 className="w-3.5 h-3.5" /></button>
+              <button onClick={() => onEdit(project)} className="btn-ghost p-1.5 rounded-md" title="Edit"><Edit className="w-3.5 h-3.5" /></button>
+              {canDelete && (
+                <button onClick={() => onDelete(project.id)} className="btn-ghost p-1.5 rounded-md text-red-400 hover:bg-red-500/10" title="Delete"><Trash2 className="w-3.5 h-3.5" /></button>
+              )}
             </div>
           )}
         </div>
